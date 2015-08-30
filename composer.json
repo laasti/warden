@@ -1,0 +1,25 @@
+{
+    "name": "laasti/warden",
+    "description": "A PHP framework agnostic authentication and authorization package.",
+    "keywords": ["authentication", "authorization"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sonia Marquette",
+            "email": "contact@nebulousweb.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "ircmaxell/password-compat": "^1.0"
+    },
+    "suggest": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Laasti\\Warden\\": "src/"
+        }
+    }
+}
