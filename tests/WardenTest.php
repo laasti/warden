@@ -17,12 +17,12 @@ class WardenTest extends \PHPUnit_Framework_TestCase
 
     public function testDefaultBehavior()
     {
-        $email = 'smarquette@pixelcircus.ca';
-        $password = '123456789';
-        $wrongPassword = '123456';
+        $email = 'info@pixelcircus.ca';
+        $password = '123456';
+        $wrongPassword = '123456789';
 
         $pdo = new PDO('mysql:host=localhost;dbname=pixms2', 'root', '');
-        $pdoRepo = new PdoUserRepository($pdo);
+        $pdoRepo = new PdoUserRepository($pdo, 'administrators');
         $warden = new Warden($pdoRepo);
         $warden->setRoleDictionary([
            'SUPERADMIN' => ['role.permission']
@@ -66,5 +66,16 @@ class WardenTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->fail();
         }
+    }
+
+    public function testInvalidUserType()
+    {
+        $fakeRepo = $this->getMock('Laasti\Warden\Repositories\RepositoryInterface');
+        $fakeRepo->method('getByIdentifier')->will($this->returnValue(new \stdClass()));
+        $warden = new Warden($fakeRepo);
+
+        $this->setExpectedException('RuntimeException');
+
+        $warden->admit('fake@example.com', '123456');
     }
 }
