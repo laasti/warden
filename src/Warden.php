@@ -297,6 +297,7 @@ class Warden
             $user = $this->repository->getById($this->session->get());
             if ($user instanceof UserInterface) {
                 $this->admitUser($user);
+                return;
             }
         }
 
