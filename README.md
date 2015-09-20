@@ -1,7 +1,8 @@
 # Laasti/warden
 
 A PHP framework agnostic authentication and authorization package.
-It does not provide any way to create users. By default, it simply reads the users table in the provided database.
+It does not and will never provide any way to create users. By default, it simply reads the users table in the provided database.
+You are free to use whatever method fits you best (PDO, ORMs...).
 
 It is a pretty simple library. You won't find any advanced security features like in Sentinel, at least for now.
 The password are hashed using the latest password_ functions from PHP 5.5.
