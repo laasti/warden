@@ -57,7 +57,6 @@ class Warden
         $this->session = $session ? : new NativeSession('_warden');
         $this->hasher = $hasher ? : new NativeHasher();
 
-        $this->setUserFromSession();
     }
 
     /**
@@ -98,6 +97,9 @@ class Warden
      */
     public function currentUser()
     {
+        if (is_null($this->currentUser)) {
+            $this->setUserFromSession();
+        }
         return $this->currentUser;
     }
 
@@ -128,10 +130,10 @@ class Warden
     public function isAdmitted(UserInterface $user = null)
     {
         if (is_null($user)) {
-            return !$this->currentUser instanceof GuestUser;
+            return !$this->currentUser() instanceof GuestUser;
         }
 
-        return $user->getIdentifier() === $this->currentUser->getIdentifier();
+        return $user->getIdentifier() === $this->currentUser()->getIdentifier();
     }
 
     /**
@@ -152,7 +154,7 @@ class Warden
      */
     public function grantAccess($roleOrPermission, UserInterface $user = null)
     {
-        $user = $user ? : $this->currentUser;
+        $user = $user ? : $this->currentUser();
 
         if (is_array($roleOrPermission) && $this->grantAccessByRoles($roleOrPermission, $user)) {
             return true;
@@ -175,7 +177,7 @@ class Warden
      */
     public function grantAccessByPermission($permission, UserInterface $user = null)
     {
-        $user = $user ? : $this->currentUser;
+        $user = $user ? : $this->currentUser();
         return in_array($permission, $this->gatherPermissions($user));
     }
 
@@ -199,7 +201,7 @@ class Warden
      */
     public function grantAccessByRoles($roles, UserInterface $user = null)
     {
-        $user = $user ? : $this->currentUser;
+        $user = $user ? : $this->currentUser();
         return count(array_diff($roles, $user->getRoles())) === 0;
     }
 
@@ -211,7 +213,7 @@ class Warden
      */
     public function grantAccessByRole($role, UserInterface $user = null)
     {
-        $user = $user ? : $this->currentUser;
+        $user = $user ? : $this->currentUser();
         return in_array($role, $user->getRoles());
     }
 
@@ -311,7 +313,7 @@ class Warden
      */
     protected function gatherPermissions(UserInterface $user = null)
     {
-        $user = $user ?: $this->currentUser;
+        $user = $user ?: $this->currentUser();
         $roles = $user->getRoles();
         $permissions = $user->getPermissions();
 
