@@ -54,9 +54,8 @@ class Warden
     public function __construct(RepositoryInterface $repository, SessionInterface $session = null, HasherInterface $hasher = null)
     {
         $this->repository = $repository;
-        $this->session = $session ? : new NativeSession('_warden');
+        $this->session = $session;
         $this->hasher = $hasher ? : new NativeHasher();
-
     }
 
     /**
