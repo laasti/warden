@@ -1,89 +1,81 @@
-# Laasti/warden
+# Laasti / Warden
 
-A PHP framework agnostic authentication and authorization package.
-It does not and will never provide any way to create users. By default, it simply reads the users table in the provided database.
-You are free to use whatever method fits you best (PDO, ORMs...).
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE.md)
+[![Build Status][ico-travis]][link-travis]
+[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
+[![Quality Score][ico-code-quality]][link-code-quality]
+[![Total Downloads][ico-downloads]][link-downloads]
 
-It is a pretty simple library. You won't find any advanced security features like in Sentinel, at least for now.
-The password are hashed using the latest password_ functions from PHP 5.5.
+This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
+PSRs you support to avoid any confusion with users and contributors.
 
-Keep in mind though that you should ensure your sessions are well protected against known vulnerabilities.
-You should also add an activation and reset mechanism. This package might provide them in the future.
-A throttling mechanism against brute force attacks can also increase the security.
+## Structure
 
-## Installation
-
-```
-composer require laasti/warden
-```
-
-The native hasher makes use of PHP 5.5 password_* functions.
-
-For PHP 5.4, you need another library:
+If any of the following are applicable to your project, then the directory structure should follow industry best practises by being named the following.
 
 ```
-composer require ircmaxell/password-compat
+bin/        
+config/
+src/
+tests/
+vendor/
+```
+
+
+## Install
+
+Via Composer
+
+``` bash
+$ composer require laasti/warden
 ```
 
 ## Usage
 
-Roles should be UPPERCASED and permissions, lowercased.
+``` php
+$skeleton = new League\Skeleton();
+echo $skeleton->echoPhrase('Hello, League!');
+```
 
-Uses PHP's native sessions, just be sure to register a session handler using SessionHandlerInterface and session_set_save_handler()
-or you can implement your own SessionInterface
+## Change log
 
-Uses PHP 5.5's native password functions by default, for backward compatibility you will require ircmaxell/password-compat
-or you can provide your own HasherInterface
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-Provides a basic PDO repository to retrieve users from database, but you can create your own RepositoryInterface
+## Testing
 
-```php
-
-$pdo = new PDO($dsn, $user, $password);
-//By default the repository looks for a table "users" with columns: id, email, password, roles, permissions
-//Roles and permissions are comma-delimited.
-$repo = new Laasti\Warden\Repositories\PdoUserRepository($pdo);
-$warden = new Laasti\Warden\Warden();
-
-//API
-$warden->admit($identifier, $password); //Logs in user matching credentials
-$warden->isAdmitted(); //User is logged in
-$warden->couldBeAdmitted($identifier, $password); //Checks if user could be logged in
-$warden->admitUser($user); //Logs in provided user, useful to bypass authentication
-$warden->currentUser(); //Logged in user, instance of GuestUser if none
-$warden->dismiss(); //Logs out current user
-$warden->grantAccess($roleOrPermission); //Check for role or permission in current user
-$warden->grantAccessByPermission($permission); // Grant access if user matches permission
-$warden->grantAccessByPermissions($permissions); // Grant access if user matches all permissions
-$warden->grantAccessByRole($role); // Grant access if user matches role
-$warden->grantAccessByRoles($roles); // Grant access if user matches all roles
-$warden->getHasher()->hash($password); //Get a hash for a password
-
-//Using Roles Dictionary
-//Roles can inherit permissions by default, to assign permissions to roles
-//you need to define a roles dictionary using an array
-$dictionary = [
-    'ROLE' => ['permission', 'permission2']
-];
-$warden->setRolesDictionary($dictionary);
+``` bash
+$ composer test
 ```
 
 ## Contributing
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
 
-## History
+## Security
 
-See CHANGELOG.md for more information.
+If you discover any security related issues, please email contact@nebulousweb.com instead of using the issue tracker.
 
 ## Credits
 
-Author: Sonia Marquette (@nebulousGirl)
+- [Sonia Marquette][link-author]
+- [All Contributors][link-contributors]
 
 ## License
 
-Released under the MIT License. See LICENSE.txt file.
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+[ico-version]: https://img.shields.io/packagist/v/laasti/warden.svg?style=flat-square
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/laasti/warden/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/laasti/warden.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/laasti/warden.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/laasti/warden.svg?style=flat-square
+
+[link-packagist]: https://packagist.org/packages/laasti/warden
+[link-travis]: https://travis-ci.org/laasti/warden
+[link-scrutinizer]: https://scrutinizer-ci.com/g/laasti/warden/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/laasti/warden
+[link-downloads]: https://packagist.org/packages/laasti/warden
+[link-author]: https://github.com/nebulousGirl
+[link-contributors]: ../../contributors

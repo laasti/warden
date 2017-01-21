@@ -48,5 +48,4 @@ class PdoUser implements UserInterface
     {
         return $this->permissions;
     }
-
 }

@@ -74,5 +74,4 @@ class NativeHasher implements HasherInterface
         $this->options = $options;
         return $this;
     }
-
 }

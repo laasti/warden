@@ -25,7 +25,7 @@ class WardenTest extends \PHPUnit_Framework_TestCase
         $pdoRepo = new PdoUserRepository($pdo, 'administrators');
         $warden = new Warden($pdoRepo);
         $warden->setRoleDictionary([
-           'SUPERADMIN' => ['role.permission']
+            'SUPERADMIN' => ['role.permission']
         ]);
         $fakeUser = new PdoUser([
             'email' => $email,

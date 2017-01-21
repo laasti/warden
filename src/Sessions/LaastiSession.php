@@ -28,5 +28,4 @@ class LaastiSession implements SessionInterface
     {
         $this->session->remove($this->key);
     }
-    
 }

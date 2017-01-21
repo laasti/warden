@@ -13,6 +13,14 @@ class NativeSession implements SessionInterface
         $this->startSession();
     }
 
+    protected function startSession()
+    {
+        //Make sure the session has not already started
+        if (session_id() == '' && !headers_sent()) {
+            session_start();
+        }
+    }
+
     public function set($value)
     {
         $_SESSION[$this->key] = $value;
@@ -40,17 +48,8 @@ class NativeSession implements SessionInterface
         $this->writeSession();
     }
 
-    protected function startSession()
-    {
-        //Make sure the session has not already started
-        if (session_id() == '' && !headers_sent()) {
-            session_start();
-        }
-    }
-
     protected function writeSession()
     {
         session_write_close();
     }
-
 }
